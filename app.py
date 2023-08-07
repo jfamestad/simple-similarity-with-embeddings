@@ -33,7 +33,7 @@ def update_sorted():
 st.title("Similarity Explorer")
 
 with st.sidebar:
-    "I'm a sidebar"
+    "Configure Embeddings Model"
 
 st.session_state.text_inputs = st.text_area(
     label="Inputs - Will be chunked by newlines",
