@@ -7,34 +7,22 @@ if not "embeddings_model" in st.session_state:
 if not "text_inputs" in st.session_state:
     st.session_state.text_inputs = None
 
-if not "chucked_text_inputs" in st.session_state:
-    st.session_state.chunked_text_inputs = []
-
-if not "sorted_text_inputs" in st.session_state:
-    st.session_state.sorted_text_inputs = []
-
-if not "embeddings" in st.session_state:
-    st.session_state.embeddings = []
-
 if not "text_query" in st.session_state:
     st.session_state.text_query = ""
-
-if not "text_query_embedding" in st.session_state:
-    st.session_state.text_query = None
 
 if not "chunked_text_input_scores" in st.session_state:
     st.session_state.chunked_text_input_scores = {}
 def update_sorted():
-    st.session_state.chunked_text_inputs = st.session_state.text_inputs.split("\n")
-    st.session_state.chunked_text_inputs = [i for i in st.session_state.chunked_text_inputs if not i == '']
-    print(f"Chunks: {str(st.session_state.chunked_text_inputs)}")
+    chunked_text_inputs = st.session_state.text_inputs.split("\n")
+    chunked_text_inputs = [i for i in chunked_text_inputs if not i == '']
+    print(f"Chunks: {str(chunked_text_inputs)}")
 
-    st.session_state.text_query_embedding = st.session_state.embeddings_model.encode(st.session_state.text_query)
+    text_query_embedding = st.session_state.embeddings_model.encode(st.session_state.text_query)
 
     st.session_state.chunked_text_input_scores = []
-    for chunk in st.session_state.chunked_text_inputs:
+    for chunk in chunked_text_inputs:
         embedding = st.session_state.embeddings_model.encode(chunk)
-        score = float(util.dot_score(st.session_state.text_query_embedding, embedding)[0][0])
+        score = float(util.dot_score(text_query_embedding, embedding)[0][0])
         st.session_state.chunked_text_input_scores.append({
             "text": chunk,
             "embedding": embedding,
